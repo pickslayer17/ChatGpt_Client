@@ -34,7 +34,7 @@ namespace ChatGpt_Client
 
             txtChat.AppendText($"Ты: {userMessage}\n");
             txtInput.Clear();
-
+            
             string response = await ChatGptClientHelper.SendMessageWithContext(apiKey, _context, userMessage, onRateLimit);
 
             if (true)

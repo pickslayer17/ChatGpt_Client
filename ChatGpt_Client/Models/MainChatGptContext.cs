@@ -12,7 +12,7 @@
         public MainChatGptContext()
         {
             Name = "MainChat";
-            model = "gpt-4o";
+            model = "gpt-4o-mini";
             var systemMessage = new SystemChatMessage(MainChatInstructions);
             messages.AddFirst(systemMessage);
             max_tokens = 1000;
