@@ -4,6 +4,7 @@ namespace ChatGpt_Client.Models
 {
     public class ChatGptContext
     {
+        public virtual string MainChatInstructions {get; set;}
         public string Name;
         public string model;
         public LinkedList<ChatMessage> messages = new LinkedList<ChatMessage>();

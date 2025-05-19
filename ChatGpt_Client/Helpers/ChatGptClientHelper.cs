@@ -15,7 +15,7 @@ namespace ChatGpt_Client.Helpers
         {
             context.AddMessage(new UserChatMessage(userMessage));
             var requestData = GetRequestDataFromContext(context);
-            var response = await GetChatGptResponse(apiKey, requestData);
+            var response = await GetChatGptResponse(apiKey, requestData, onRateLimitDetected);
             context.AddMessage(new AssistantChatMessage(response));
 
             return response;
@@ -55,7 +55,7 @@ namespace ChatGpt_Client.Helpers
                             onRateLimitDetected?.Invoke(seconds);
                             await Task.Delay(milliseconds);
 
-                            return await GetChatGptResponse(apiKey, requestData);
+                            return await GetChatGptResponse(apiKey, requestData, onRateLimitDetected);
                         }
                         
                     }

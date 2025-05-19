@@ -1,8 +1,5 @@
 ﻿using ChatGpt_Client.Helpers;
 using ChatGpt_Client.Models;
-using Newtonsoft.Json;
-using System.Text;
-using System.Windows.Forms;
 
 namespace ChatGpt_Client
 {
@@ -32,17 +29,18 @@ namespace ChatGpt_Client
             if (string.IsNullOrEmpty(userMessage)) return;
             Action<double> onRateLimit = seconds =>
             {
-                onRateLimitTemplate(txtInput, seconds);
+                onRateLimitTemplate(errorTextBox, seconds);
             };
 
             txtChat.AppendText($"Ты: {userMessage}\n");
             txtInput.Clear();
-            
+
             string response = await ChatGptClientHelper.SendMessageWithContext(apiKey, _context, userMessage, onRateLimit);
 
-            if(true)
+            if (true)
             {
                 txtChat.AppendText($"ChatGPT: {response}\n");
+                errorTextBox.Clear();
             }
             else
             {
@@ -52,8 +50,6 @@ namespace ChatGpt_Client
                 _context.ReplaceLastMessage(finalResponse);
                 txtChat.AppendText($"ChatGPT({_context.Name}): {finalResponse}\n");
             }
-
-
         }
 
         /// <summary>
@@ -80,6 +76,8 @@ namespace ChatGpt_Client
             txtInput = new RichTextBox();
             txtChat = new RichTextBox();
             button1 = new Button();
+            chatInstructions = new RichTextBox();
+            errorTextBox = new RichTextBox();
             SuspendLayout();
             // 
             // txtInput
@@ -108,11 +106,30 @@ namespace ChatGpt_Client
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // chatInstructions
+            // 
+            chatInstructions.Location = new Point(803, 12);
+            chatInstructions.Name = "chatInstructions";
+            chatInstructions.Size = new Size(555, 208);
+            chatInstructions.TabIndex = 5;
+            chatInstructions.Text = _context.MainChatInstructions;
+            chatInstructions.TextChanged += richTextBox1_TextChanged;
+            // 
+            // errorTextBox
+            // 
+            errorTextBox.Location = new Point(802, 322);
+            errorTextBox.Name = "errorTextBox";
+            errorTextBox.Size = new Size(556, 116);
+            errorTextBox.TabIndex = 6;
+            errorTextBox.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(805, 451);
+            ClientSize = new Size(1370, 453);
+            Controls.Add(errorTextBox);
+            Controls.Add(chatInstructions);
             Controls.Add(button1);
             Controls.Add(txtChat);
             Controls.Add(txtInput);
@@ -126,5 +143,7 @@ namespace ChatGpt_Client
         private RichTextBox txtInput;
         private RichTextBox txtChat;
         private Button button1;
+        private RichTextBox chatInstructions;
+        private RichTextBox errorTextBox;
     }
 }
